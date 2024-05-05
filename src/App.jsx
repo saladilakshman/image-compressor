@@ -135,6 +135,7 @@ function App() {
   /**function to clear the images file selection */
   const clearQueue = () => {
     setShowcompressioncomponent(false);
+    setIsclearqueued(true)
     setActualImage('');
     setCompressedImage('');
     setFileSize({
