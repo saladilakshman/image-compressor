@@ -48,13 +48,15 @@ function App() {
   const [fileSize, setFileSize] = useState({
     actualfilesize: null,
     compressedfilesize: 0,
-    filename: null
+    filename: null,
   });
-  const [showcompressioncomponent, setShowcompressioncomponent] = useState(false);
+  const [showcompressioncomponent, setShowcompressioncomponent] =
+    useState(false);
   const [shareimage, setShareimage] = useState(null);
-  const [disablebtn, setDisablebtn] = useState(true)
-  const [compressbuttoninnertText, setCompressbuttoninnerText] = useState('compress');
-  const [isclearqueued, setIsclearqueued] = useState(true)
+  const [disablebtn, setDisablebtn] = useState(true);
+  const [compressbuttoninnertText, setCompressbuttoninnerText] =
+    useState("compress");
+  const [isclearqueued, setIsclearqueued] = useState(true);
   /**To check whether the file is empty as to show the component */
   useEffect(() => {
     if (actualImage === "") {
@@ -67,12 +69,11 @@ function App() {
   /**Toc check whether compressed image is null or not */
   useEffect(() => {
     if (compressedImage === "") {
-      setDisablebtn(true)
+      setDisablebtn(true);
+    } else {
+      setDisablebtn(false);
     }
-    else {
-      setDisablebtn(false)
-    }
-  }, [compressedImage])
+  }, [compressedImage]);
 
   /**function to enalbe file selection */
   const filecompress = () => {
@@ -85,16 +86,15 @@ function App() {
     setFileSize((fileSize) => ({
       ...fileSize,
       actualfilesize: Math.floor(size / one_kb),
-      filename: name
+      filename: name,
     }));
-
   };
   /**async function to compress image based on user selection image */
   const compressImage = async () => {
-    setCompressbuttoninnerText('compressing..')
+    setCompressbuttoninnerText("compressing..");
     await compressAccurately(filetocompress, compressionvalue)
       .then((res) => {
-        console.log(res)
+        console.log(res);
         const filetoshare = new File([res], "image.png", { type: res.type });
         setShareimage(filetoshare);
         const compressedurl = URL.createObjectURL(res);
@@ -103,7 +103,7 @@ function App() {
           ...prevState,
           compressedfilesize: Math.floor(res.size / 1024),
         }));
-        setCompressbuttoninnerText('compressed')
+        setCompressbuttoninnerText("compressed");
       })
       .catch((err) => console.log(err));
   };
@@ -135,29 +135,28 @@ function App() {
   /**function to clear the images file selection */
   const clearQueue = () => {
     setShowcompressioncomponent(false);
-    setIsclearqueued(true)
-    setActualImage('');
-    setCompressedImage('');
+    setIsclearqueued(true);
+    setActualImage("");
+    setCompressedImage("");
     setFileSize({
       actualfilesize: null,
       compressedfilesize: 0,
-      filename: null
-    })
-  }
+      filename: null,
+    });
+  };
 
   useEffect(() => {
     if (actualImage === "" && compressedImage === "") {
-      setIsclearqueued(true)
+      setIsclearqueued(true);
+    } else {
+      setIsclearqueued(false);
     }
-    else {
-      setIsclearqueued(false)
-    }
-  }, [actualImage, compressedImage, isclearqueued])
+  }, [actualImage, compressedImage, isclearqueued]);
   return (
     <Container
       sx={{
         paddingBlockStart: { xs: 5, lg: 12 },
-        marginBlockEnd: 3,
+        marginBlockEnd: 8,
       }}
     >
       <Typography
@@ -213,16 +212,12 @@ function App() {
             onChange={filecompress}
             style={{ display: "none" }} // Hide the default file input element
           />
-          <Button
-            component="span"
-            variant="contained"
-            size="large"
-          >
+          <Button component="span" variant="contained" size="large">
             choose image
           </Button>
         </label>
         <Button
-          variant='contained'
+          variant="contained"
           size="large"
           sx={styles.clearbutton}
           disabled={isclearqueued}
@@ -295,7 +290,7 @@ function App() {
                 sx={styles.file_image}
               />
               <Stack
-                direction="column"
+                direction={{ xs: "row", lg: "column" }}
                 justifyContent="center"
                 alignItems="center"
                 spacing={1.2}
